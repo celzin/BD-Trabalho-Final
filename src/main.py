@@ -1,4 +1,4 @@
-# pip install mysql-connector-python 1
+# pip install mysql-connector-python
 # pip install tabulate 
 # pip install fpdf
 
@@ -10,7 +10,9 @@ conn = mysql.connector.connect(
     host='localhost',
     user='root',
     password='root',
-    database='avaliacao'
+    database='avaliacao',
+    charset="utf8mb4", # Win11
+    collation="utf8mb4_general_ci" # Win11
 )
 #CONSULTAS-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def listar_patogenos():
