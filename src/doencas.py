@@ -12,6 +12,16 @@ def cadastrar_doenca(conn):
             nome_tecnico = input("Digite o nome técnico da doença: ")
             cid = input("Digite o CID da doença: ")
 
+            # Verificar se o CID já existe
+            cursor.execute("SELECT COUNT(*) FROM doencas WHERE cid = %s", (cid,))
+            cid_existe = cursor.fetchone()[0]
+
+            if cid_existe > 0:
+                print(f"Erro: Já existe uma doença cadastrada com o CID '{cid}'.")
+                return  # Encerra a função sem cadastrar a nova doença
+
+            # Se o CID não existir, continue com o cadastro
+            
             # Adicionar patógeno
             print("-------------------------------------------------------------------------------PATÓGENOS-------------------------------------------------------------------------------------")
             listar_patogenos(conn)
