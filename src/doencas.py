@@ -100,9 +100,20 @@ def cadastrar_doenca(conn):
                 print(f"Erro: Nenhum sintoma cadastrado com o ID '{sintoma_id}'.")
                 return  # Encerra a função se o ID do sintoma não for válido
 
-            ocorrencia = input("Digite a ocorrência do sintoma na doença: ")
+            # Menu para selecionar o nível de ocorrência
+            niveis_ocorrencia = ["muito comum", "comum", "pouco comum", "raro", "muito raro"]
+            print("Selecione o nível de ocorrência do sintoma:")
+            for idx, nivel in enumerate(niveis_ocorrencia, 1):
+                print(f"{idx} - {nivel}")
+            nivel_opcao = int(input("Escolha o número correspondente ao nível de ocorrência: "))
+            if 1 <= nivel_opcao <= len(niveis_ocorrencia):
+                nivel_selecionado = niveis_ocorrencia[nivel_opcao - 1]
+            else:
+                print("Opção inválida. Associação do sintoma cancelada.")
+                return
+
             sql = "INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (doenca_id, sintoma_id, ocorrencia))
+            cursor.execute(sql, (doenca_id, sintoma_id, nivel_selecionado))
             conn.commit()  # Confirma a inserção da relação doença-sintoma
             print("Relação Doença x Sintoma cadastrado com sucesso!")
             print()
