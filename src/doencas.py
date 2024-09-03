@@ -82,8 +82,24 @@ def cadastrar_doenca(conn):
         opcao = input("Quer adicionar um novo sintoma à doença? (s/n): ")
         if opcao.lower() == 's':
             doenca_id = int(input("Digite o ID da doença: "))
+
+             # Verificar se o ID da doença é válido
+            cursor.execute("SELECT COUNT(*) FROM doencas WHERE id = %s", (doenca_id,))
+            doenca_existe = cursor.fetchone()[0]
+            if doenca_existe == 0:
+                print(f"Erro: Nenhuma doença cadastrada com o ID '{doenca_id}'.")
+                return  # Encerra a função se o ID da doença não for válido
+        
             listar_sintomas(conn)
             sintoma_id = int(input("Digite o ID do sintoma: "))
+
+            # Verificar se o ID do sintoma é válido
+            cursor.execute("SELECT COUNT(*) FROM sintomas WHERE id = %s", (sintoma_id,))
+            sintoma_existe = cursor.fetchone()[0]
+            if sintoma_existe == 0:
+                print(f"Erro: Nenhum sintoma cadastrado com o ID '{sintoma_id}'.")
+                return  # Encerra a função se o ID do sintoma não for válido
+
             ocorrencia = input("Digite a ocorrência do sintoma na doença: ")
             sql = "INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES (%s, %s, %s)"
             cursor.execute(sql, (doenca_id, sintoma_id, ocorrencia))
