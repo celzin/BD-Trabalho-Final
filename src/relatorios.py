@@ -1,7 +1,12 @@
 from fpdf import FPDF
 from doencas import *
 
-#5 - Relatórios ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.units import inch
+
 def relatorio_1(conn):
     cursor = conn.cursor()
     listar_doenca(conn)
@@ -9,10 +14,9 @@ def relatorio_1(conn):
     
     sql = """
     SELECT 
-        d.id, 
         d.nome_tecnico, 
         d.cid, 
-        dnp.nome_popular, 
+        GROUP_CONCAT(DISTINCT dnp.nome_popular ORDER BY dnp.nome_popular SEPARATOR ', ') AS nomes_populares,
         p.nome_cientifico, 
         p.tipo, 
         GROUP_CONCAT(CONCAT(s.nome, ' (', ds.ocorrencia, ') ') SEPARATOR ', ') AS sintomas 
@@ -22,7 +26,7 @@ def relatorio_1(conn):
     JOIN doenca_sintoma ds ON d.id = ds.doenca_id 
     JOIN sintomas s ON s.id = ds.sintoma_id 
     WHERE d.id = %s
-    GROUP BY d.id, d.nome_tecnico, d.cid, dnp.nome_popular, p.nome_cientifico, p.tipo;
+    GROUP BY d.nome_tecnico, d.cid, p.nome_cientifico, p.tipo;
     """
     
     try:
@@ -30,34 +34,118 @@ def relatorio_1(conn):
         results = cursor.fetchone()
         
         if results:
-            column_names = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Científico", "Tipo", "Sintomas"]
+            # Estilos para o Paragraph
+            styles = getSampleStyleSheet()
+            styleN = styles["BodyText"]
             
-            # Início da geração do PDF
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_font("Arial", size=12)
+            # Cria um documento em modo paisagem
+            pdf = SimpleDocTemplate("relatorio_doenca_reportlab.pdf", pagesize=landscape(letter))
+            elements = []
+
+            # Cabeçalhos da tabela
+            headers = ['Doença', 'CID', 'Nomes Populares', 'Patógeno', 'Tipo do Patógeno', 'Sintomas e Taxa de Ocorrência']
             
-            pdf.cell(200, 10, txt="Relatório de Doença Específica", ln=True, align='C')
-            pdf.ln(10)
-            
-            for i, value in enumerate(results):
-                if value is None:
-                    value = ""
-                text = f"{column_names[i]}: {str(value).replace('’', "'").replace('“', '"').replace('”', '"').replace('–', '-').replace('—', '-').replace('…', '...')}"
-                pdf.cell(200, 10, txt=text, ln=True, align='L')
-            
-            pdf.output("relatorio_doenca_especifica.pdf")
+            # Certifique-se de que cada campo em `results` não seja None
+            data = [
+                [Paragraph(results[0] if results[0] else "N/A", styleN), 
+                 Paragraph(results[1] if results[1] else "N/A", styleN), 
+                 Paragraph(results[2] if results[2] else "N/A", styleN), 
+                 Paragraph(results[3] if results[3] else "N/A", styleN), 
+                 Paragraph(results[4] if results[4] else "N/A", styleN), 
+                 Paragraph(results[5] if results[5] else "N/A", styleN)]
+            ]
+            data_with_headers = [headers] + data
+
+            # Ajuste de largura das colunas e altura das linhas
+            col_widths = [1.5 * inch, 1 * inch, 1.5 * inch, 2 * inch, 1.5 * inch, 3 * inch]
+            row_heights = [0.6 * inch] * len(data_with_headers)
+
+            # Configura o estilo da tabela
+            table = Table(data_with_headers, colWidths=col_widths, rowHeights=row_heights)
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  # Cor de fundo do cabeçalho
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  # Cor do texto do cabeçalho
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centraliza o texto
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Fonte do cabeçalho em negrito
+                ('FONTSIZE', (0, 0), (-1, 0), 10),  # Tamanho da fonte do cabeçalho
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espaçamento inferior do cabeçalho
+                ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),  # Cor de fundo das células
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),  # Grelha preta em toda a tabela
+            ]))
+
+            # Adiciona a tabela ao documento
+            elements.append(table)
+
+            # Build PDF
+            pdf.build(elements)
             print("Relatório gerado com sucesso!")
         else:
             print("Doença não encontrada.")
-        
-        # Não é necessário chamar `fetchall()` após `fetchone()`
-
+    
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
     
     finally:
         cursor.close()
+
+    
+#5 - Relatórios ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# def relatorio_1(conn):
+#     cursor = conn.cursor()
+#     listar_doenca(conn)
+#     opcao = int(input('Digite o id de uma doença para ser colocado no pdf:'))
+    
+#     sql = """
+#     SELECT 
+#         d.id, 
+#         d.nome_tecnico, 
+#         d.cid, 
+#         dnp.nome_popular, 
+#         p.nome_cientifico, 
+#         p.tipo, 
+#         GROUP_CONCAT(CONCAT(s.nome, ' (', ds.ocorrencia, ') ') SEPARATOR ', ') AS sintomas 
+#     FROM doencas d 
+#     JOIN patogenos p ON p.id = d.patogeno_id 
+#     LEFT JOIN doenca_nomes_populares dnp ON dnp.doenca_id = d.id 
+#     JOIN doenca_sintoma ds ON d.id = ds.doenca_id 
+#     JOIN sintomas s ON s.id = ds.sintoma_id 
+#     WHERE d.id = %s
+#     GROUP BY d.id, d.nome_tecnico, d.cid, dnp.nome_popular, p.nome_cientifico, p.tipo;
+#     """
+    
+#     try:
+#         cursor.execute(sql, (opcao,))
+#         results = cursor.fetchone()
+        
+#         if results:
+#             column_names = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Científico", "Tipo", "Sintomas"]
+            
+#             # Início da geração do PDF
+#             pdf = FPDF()
+#             pdf.add_page()
+#             pdf.set_font("Arial", size=12)
+            
+#             pdf.cell(200, 10, txt="Relatório de Doença Específica", ln=True, align='C')
+#             pdf.ln(10)
+            
+#             for i, value in enumerate(results):
+#                 if value is None:
+#                     value = ""
+#                 text = f"{column_names[i]}: {str(value).replace('’', "'").replace('“', '"').replace('”', '"').replace('–', '-').replace('—', '-').replace('…', '...')}"
+#                 pdf.cell(200, 10, txt=text, ln=True, align='L')
+            
+#             pdf.output("relatorio_doenca_especifica.pdf")
+#             print("Relatório gerado com sucesso!")
+#         else:
+#             print("Doença não encontrada.")
+        
+#         # Não é necessário chamar `fetchall()` após `fetchone()`
+
+#     except mysql.connector.Error as err:
+#         print(f"Erro: {err}")
+    
+#     finally:
+#         cursor.close()
 
 
 def relatorio_2(conn):
