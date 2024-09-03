@@ -15,7 +15,6 @@ def cadastrar_doenca(conn):
             # Verificar se o CID já existe
             cursor.execute("SELECT COUNT(*) FROM doencas WHERE cid = %s", (cid,))
             cid_existe = cursor.fetchone()[0]
-
             if cid_existe > 0:
                 print(f"Erro: Já existe uma doença cadastrada com o CID '{cid}'.")
                 return  # Encerra a função sem cadastrar a nova doença
@@ -41,6 +40,7 @@ def cadastrar_doenca(conn):
                 else:
                     print("Opção inválida. Cadastro de patógeno cancelado.")
                     return
+                
                 sql = "INSERT INTO patogenos (nome_cientifico, tipo) VALUES (%s, %s)"
                 cursor.execute(sql, (nome_cientifico, tipo_selecionado))
                 conn.commit()  # Confirma a inserção do patógeno
@@ -62,6 +62,14 @@ def cadastrar_doenca(conn):
         opcao = input("Quer adicionar um novo sintoma? (s/n): ")
         if opcao.lower() == 's':
             nome_sintoma = input("Digite o nome do sintoma: ")
+
+            # Verificar se o sintoma já existe
+            cursor.execute("SELECT COUNT(*) FROM sintomas WHERE nome = %s", (nome_sintoma,))
+            sintoma_existe = cursor.fetchone()[0]
+            if sintoma_existe > 0:
+                print(f"Erro: O sintoma '{nome_sintoma}' já está cadastrado.")
+                return  # Encerra a função sem cadastrar o novo sintoma
+
             sql = "INSERT INTO sintomas (nome) VALUES (%s)"
             cursor.execute(sql, (nome_sintoma,))
             conn.commit()  # Confirma a inserção do sintoma
