@@ -29,9 +29,20 @@ def cadastrar_doenca(conn):
             patogeno_id = None
             if opcao.lower() == 's':
                 nome_cientifico = input("Digite o nome científico do patógeno: ")
-                tipo = input("Digite o tipo do patógeno: ")
+
+                # Menu para seleção do tipo de patógeno
+                tipos_patogenos = ["Bactéria", "Vírus", "Fungo", "Parasita", "Protozoário"] #, "Príon", "Helminto", "Riquétsia"
+                print("Selecione o tipo de patógeno:")
+                for idx, tipo in enumerate(tipos_patogenos, 1):
+                    print(f"{idx} - {tipo}")
+                tipo_opcao = int(input("Escolha o número correspondente ao tipo de patógeno: "))
+                if 1 <= tipo_opcao <= len(tipos_patogenos):
+                    tipo_selecionado = tipos_patogenos[tipo_opcao - 1]
+                else:
+                    print("Opção inválida. Cadastro de patógeno cancelado.")
+                    return
                 sql = "INSERT INTO patogenos (nome_cientifico, tipo) VALUES (%s, %s)"
-                cursor.execute(sql, (nome_cientifico, tipo))
+                cursor.execute(sql, (nome_cientifico, tipo_selecionado))
                 conn.commit()  # Confirma a inserção do patógeno
                 patogeno_id = cursor.lastrowid
             else:
