@@ -225,6 +225,8 @@ def pesquisar_doenca(conn):
         else:
             col_widths = [10, 30, 10, 30, 30, 30, 100]  # tamanho das colunas
 
+            registrar_log(f"Consulta realizada: Pesquisa de doença: {nome_tecnico}")
+
             # Cabeçalhos
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
             header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
