@@ -2,6 +2,7 @@ from db_utils import *
 from doencas import *
 from diagnostico import * 
 from relatorios import *
+from logs import *
 
 def main():
     conn = get_db_connection()
@@ -31,6 +32,7 @@ def main():
             relatorios(conn)
         elif opcao == 6:
             print('Em Construção!')
+            # gerar_relatorio_de_logs()
         elif opcao == 7:
             print("Saindo...")
             break

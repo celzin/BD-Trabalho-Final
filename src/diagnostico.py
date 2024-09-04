@@ -1,4 +1,5 @@
 from db_utils import *
+from logs import *
 
 #4 - Diagnóstico ------------------------------------------------------------------------------------------------------------------------
 def diagnostico(conn):
@@ -37,6 +38,9 @@ def diagnostico(conn):
         if not results:
             print("Nenhuma doença encontrada com os sintomas fornecidos.")
         else:
+
+            registrar_log(f"Diagnóstico realizado com sintomas: {sintomas_input}")
+
             print()
             print("Você pode estar com algumas das doenças abaixo:")
             print()
