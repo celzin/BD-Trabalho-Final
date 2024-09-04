@@ -54,7 +54,7 @@ def cadastrar_doenca(conn):
             cursor.execute(sql_doenca, (nome_tecnico, cid, patogeno_id))
             conn.commit()  # Confirma a inserção da doença
             
-            registrar_log(f"Cadastro de doença: {nome_tecnico}, CID: {cid}, Patógeno ID: {patogeno_id}")
+            registrar_log(f"Cadastro de Doença: {nome_tecnico}, CID: {cid}, Patógeno ID: {patogeno_id}",)
             print("Doença cadastrada com sucesso!")
             print()
         
