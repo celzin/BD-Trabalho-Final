@@ -1,4 +1,5 @@
 from db_utils import *
+from logs import *
 # from db_utils import listar_patogenos, listar_sintomas, listar_nomes
 
 #1 - Cadastrar doença --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,6 +53,8 @@ def cadastrar_doenca(conn):
             sql_doenca = "INSERT INTO doencas (nome_tecnico, cid, patogeno_id) VALUES (%s, %s, %s)"
             cursor.execute(sql_doenca, (nome_tecnico, cid, patogeno_id))
             conn.commit()  # Confirma a inserção da doença
+            
+            registrar_log(f"Cadastro de Doença: {nome_tecnico}, CID: {cid}, Patógeno ID: {patogeno_id}",)
             print("Doença cadastrada com sucesso!")
             print()
         
@@ -73,6 +76,8 @@ def cadastrar_doenca(conn):
             sql = "INSERT INTO sintomas (nome) VALUES (%s)"
             cursor.execute(sql, (nome_sintoma,))
             conn.commit()  # Confirma a inserção do sintoma
+
+            registrar_log(f"Cadastro de sintoma: {nome_tecnico}")
             print("Sintoma cadastrado com sucesso!")
             print()
         
@@ -115,6 +120,8 @@ def cadastrar_doenca(conn):
             sql = "INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES (%s, %s, %s)"
             cursor.execute(sql, (doenca_id, sintoma_id, nivel_selecionado))
             conn.commit()  # Confirma a inserção da relação doença-sintoma
+
+            registrar_log(f"Cadastro de sintoma: {sintoma_id} à doença: {doenca_id}")
             print("Relação Doença x Sintoma cadastrado com sucesso!")
             print()
 
@@ -129,6 +136,8 @@ def cadastrar_doenca(conn):
             sql = "INSERT INTO doenca_nomes_populares (doenca_id, nome_popular) VALUES (%s, %s)"
             cursor.execute(sql, (doenca_id, nome_popular))
             conn.commit()  # Confirma a inserção da relação doença-sintoma
+
+            registrar_log(f"Cadastro de nome popular: {nome_popular} à doença: {doenca_id}")
             print("Nome Popular cadastrado com sucesso!")
             print()
         
@@ -172,6 +181,8 @@ def listar_doenca(conn):
     else:
         col_widths = [10, 30, 10, 30, 30, 30, 100]  #tamanho das colunas
 
+        registrar_log("Consulta realizada: Listagem de todas as doenças")
+
         # Cabeçalhos
         headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
         header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
@@ -213,6 +224,8 @@ def pesquisar_doenca(conn):
             print("Nenhuma Doença cadastrada com esse nome.")
         else:
             col_widths = [10, 30, 10, 30, 30, 30, 100]  # tamanho das colunas
+
+            registrar_log(f"Consulta realizada: Pesquisa de doença: {nome_tecnico}")
 
             # Cabeçalhos
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
