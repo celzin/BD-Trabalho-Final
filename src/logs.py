@@ -1,13 +1,17 @@
 import logging
 import os
 
-LOG_DIR = os.path.abspath('./logs')  
+LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'logs')
 LOG_FILE = os.path.join(LOG_DIR, 'operacoes.log')
 
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+os.makedirs(LOG_DIR, exist_ok=True)
 
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(message)s')
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format='%(asctime)s - %(message)s',
+    filemode='a'  # Modo de append, para que os logs não sejam sobrescritos
+)
 
 def registrar_log(mensagem):
     logging.info(mensagem)
