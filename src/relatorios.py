@@ -6,11 +6,9 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.units import inch
 from logs import registrar_log
+import os
 
-# Caminho para a pasta de relatórios
 REPORT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'reports')
-
-# Cria a pasta de relatórios se não existir
 os.makedirs(REPORT_DIR, exist_ok=True)
 
 #5 - Relatórios ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,8 +43,11 @@ def relatorio_1(conn):
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
+            # Definir o caminho para o relatório na pasta 'reports'
+            report_path = os.path.join(REPORT_DIR, f"relatorio_doenca_{opcao}.pdf")
+
             # Cria um documento em modo paisagem
-            pdf = SimpleDocTemplate("relatorio_doenca_reportlab.pdf", pagesize=landscape(letter))
+            pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
             # Cabeçalhos da tabela
@@ -80,11 +81,10 @@ def relatorio_1(conn):
                 ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
             ]))
             
-            relatorio_path = os.path.join(REPORT_DIR, f"relatorio_doenca_{opcao}.pdf")
-            pdf.output(relatorio_path)
-            
-            registrar_log(f"Relatório gerado para a doença com ID {opcao} em {relatorio_path}")
-            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")
+            elements.append(table)
+            pdf.build(elements)
+            registrar_log(f"Relatório gerado para a doença com ID {opcao} e salvo em {report_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {report_path}")
         else:
             print("Doença não encontrada.")
     
@@ -123,8 +123,11 @@ def relatorio_2(conn):
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
+            # Definir o caminho para o relatório na pasta 'reports'
+            report_path = os.path.join(REPORT_DIR, "relatorio_todas_doencas.pdf")
+            
             # Criação do PDF
-            pdf = SimpleDocTemplate("relatorio_todas_doencas_reportlab.pdf", pagesize=landscape(letter))
+            pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
             # Cabeçalhos da tabela
@@ -163,10 +166,10 @@ def relatorio_2(conn):
                 ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
             
-            relatorio_path = os.path.join(REPORT_DIR, "relatorio_todas_doencas.pdf")
-            pdf.output(relatorio_path)
-            registrar_log(f"Relatório de todas doenças gerado em {relatorio_path}")
-            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")      
+            elements.append(table)
+            pdf.build(elements)
+            registrar_log(f"Relatório de TODAS DOENÇAS gerado e salvo em {report_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {report_path}")   
         else:
             print("Nenhuma doença encontrada.")
     
@@ -223,8 +226,11 @@ def relatorio_3(conn):
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
+            # Definir o caminho para o relatório na pasta 'reports'
+            report_path = os.path.join(REPORT_DIR, "relatorio_doencas_sintomas.pdf")
+
             # Início da geração do PDF
-            pdf = SimpleDocTemplate("relatorio_doencas_sintomas_reportlab.pdf", pagesize=landscape(letter))
+            pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
             # Cabeçalhos da tabela
@@ -265,10 +271,10 @@ def relatorio_3(conn):
                 ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
 
-            relatorio_path = os.path.join(REPORT_DIR, "relatorio_doencas_sintomas.pdf")
-            pdf.output(relatorio_path)
-            registrar_log(f"Relatório gerado para doenças com sintomas {sintomas_lista} em {relatorio_path}")
-            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")
+            elements.append(table)
+            pdf.build(elements)
+            registrar_log(f"Relatório gerado para as doenças com sintomas: {sintomas_lista} e salvo em {report_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {report_path}")
     
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
