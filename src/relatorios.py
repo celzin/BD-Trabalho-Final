@@ -205,26 +205,6 @@ def relatorio_3(conn):
     GROUP BY d.id, d.nome_tecnico, d.cid, p.nome_cientifico, p.tipo
     ORDER BY d.nome_tecnico;
     """
-    # sql = f"""
-    # SELECT 
-    #     d.id, 
-    #     d.nome_tecnico, 
-    #     d.cid, 
-    #     GROUP_CONCAT(DISTINCT dnp.nome_popular ORDER BY dnp.nome_popular SEPARATOR ', ') AS nomes_populares, 
-    #     p.nome_cientifico, 
-    #     p.tipo, 
-    #     GROUP_CONCAT(DISTINCT CONCAT(s.nome, ' (', ds.ocorrencia, ') ') SEPARATOR ', ') AS sintomas,
-    #     COUNT(DISTINCT s.id) AS sintomas_qtd
-    # FROM doencas d 
-    # JOIN patogenos p ON p.id = d.patogeno_id 
-    # LEFT JOIN doenca_nomes_populares dnp ON dnp.doenca_id = d.id 
-    # JOIN doenca_sintoma ds ON d.id = ds.doenca_id 
-    # JOIN sintomas s ON s.id = ds.sintoma_id 
-    # WHERE s.nome IN ({placeholders}) 
-    # GROUP BY d.id, d.nome_tecnico, d.cid, p.nome_cientifico, p.tipo 
-    # HAVING sintomas_qtd = %s
-    # ORDER BY sintomas_qtd DESC, d.nome_tecnico;
-    # """
     
     try:
         cursor.execute(sql, tuple(sintomas_lista) + (total_sintomas,))
