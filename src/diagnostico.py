@@ -54,13 +54,11 @@ def diagnostico(conn):
 
             registrar_log("Consulta realizada: Listagem de todas as doenças")
 
-            # Cabeçalhos
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
             header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
             print(header_row)
             print("-" * (sum(col_widths) + len(col_widths) - 1))
 
-            # Dados
             for row in results:
                 print("".join(f"{str(cell):<{width}} " for cell, width in zip(row, col_widths)))
                 

@@ -39,21 +39,16 @@ def relatorio_1(conn):
         results = cursor.fetchone()
         
         if results:
-            # Estilos para o Paragraph
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
-            # Definir o caminho para o relatório na pasta 'reports'
             report_path = os.path.join(REPORT_DIR, f"relatorio_doenca_{opcao}.pdf")
 
-            # Cria um documento em modo paisagem
             pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
-            # Cabeçalhos da tabela
             headers = ['Doença', 'CID', 'Nomes Populares', 'Patógeno', 'Tipo do Patógeno', 'Sintomas e Taxa de Ocorrência']
             
-            # Certifique-se de que cada campo em `results` não seja None
             data = [
                 [Paragraph(results[0] if results[0] else "", styleN), 
                  Paragraph(results[1] if results[1] else "", styleN), 
@@ -64,11 +59,9 @@ def relatorio_1(conn):
             ]
             data_with_headers = [headers] + data
 
-            # Ajuste de largura das colunas e altura das linhas
             col_widths = [1.5 * inch, 1 * inch, 1.5 * inch, 2 * inch, 1.5 * inch, 3 * inch]
             row_heights = [0.6 * inch] * len(data_with_headers)
 
-            # Configura o estilo da tabela
             table = Table(data_with_headers, colWidths=col_widths, rowHeights=row_heights)
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  
@@ -119,21 +112,16 @@ def relatorio_2(conn):
         results = cursor.fetchall()
         
         if results:
-            # Estilos para o Paragraph
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
-            # Definir o caminho para o relatório na pasta 'reports'
             report_path = os.path.join(REPORT_DIR, "relatorio_todas_doencas.pdf")
             
-            # Criação do PDF
             pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
-            # Cabeçalhos da tabela
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Científico", "Tipo", "Sintomas"]
             
-            # Preparar os dados para a tabela, convertendo cada campo para `Paragraph`
             data = []
             for row in results:
                 data.append([
@@ -146,13 +134,10 @@ def relatorio_2(conn):
                     Paragraph(str(row[6] if row[6] else ""), styleN),
                 ])
             
-            # Inclui os cabeçalhos e os dados na tabela
             data_with_headers = [headers] + data
 
-            # Ajuste de largura das colunas
             col_widths = [0.8 * inch, 1.5 * inch, 1 * inch, 1.5 * inch, 1.5 * inch, 1 * inch, 2.5 * inch]
 
-            # Configura o estilo da tabela com alternância de cores
             table = Table(data_with_headers, colWidths=col_widths)
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  
@@ -222,22 +207,17 @@ def relatorio_3(conn):
         if not results:
             print("Nenhuma doença encontrada com os sintomas fornecidos.")
         else:
-            # Estilos para o Paragraph
             styles = getSampleStyleSheet()
             styleN = styles["BodyText"]
             
-            # Definir o caminho para o relatório na pasta 'reports'
             report_path = os.path.join(REPORT_DIR, "relatorio_doencas_sintomas.pdf")
 
-            # Início da geração do PDF
             pdf = SimpleDocTemplate(report_path, pagesize=landscape(letter))
             elements = []
 
-            # Cabeçalhos da tabela
             # headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Científico", "Tipo", "Sintomas", "Quantidade de Sintomas"]
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Científico", "Tipo", "Sintomas", ]
             
-            # Preparar os dados para a tabela, convertendo cada campo para `Paragraph`
             data = []
             for row in results:
                 data.append([
@@ -251,13 +231,10 @@ def relatorio_3(conn):
                     # Paragraph(str(row[7] if row[7] is not None else ""), styleN)
                 ])
             
-            # Inclui os cabeçalhos e os dados na tabela
             data_with_headers = [headers] + data
 
-            # Ajuste de largura das colunas
             col_widths = [0.8 * inch, 1.5 * inch, 1 * inch, 1.5 * inch, 1.5 * inch, 1 * inch, 2.5 * inch, 1 * inch]
 
-            # Configura o estilo da tabela
             table = Table(data_with_headers, colWidths=col_widths)
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  

@@ -13,15 +13,12 @@ def cadastrar_doenca(conn):
             nome_tecnico = input("Digite o nome técnico da doença: ")
             cid = input("Digite o CID da doença: ")
 
-            # Verificar se o CID já existe
             cursor.execute("SELECT COUNT(*) FROM doencas WHERE cid = %s", (cid,))
             cid_existe = cursor.fetchone()[0]
             if cid_existe > 0:
                 print(f"Erro: Já existe uma doença cadastrada com o CID '{cid}'.")
-                return  # Encerra a função sem cadastrar a nova doença
+                return  
 
-            # Se o CID não existir, continue com o cadastro
-            
             # Adicionar patógeno
             print("-------------------------------------------------------------------------------PATÓGENOS-------------------------------------------------------------------------------------")
             listar_patogenos(conn)
@@ -30,7 +27,6 @@ def cadastrar_doenca(conn):
             if opcao.lower() == 's':
                 nome_cientifico = input("Digite o nome científico do patógeno: ")
 
-                # Menu para seleção do tipo de patógeno
                 tipos_patogenos = ["Bactéria", "Vírus", "Fungo", "Parasita", "Protozoário"] #, "Príon", "Helminto", "Riquétsia"
                 print("Selecione o tipo de patógeno:")
                 for idx, tipo in enumerate(tipos_patogenos, 1):
@@ -44,7 +40,7 @@ def cadastrar_doenca(conn):
                 
                 sql = "INSERT INTO patogenos (nome_cientifico, tipo) VALUES (%s, %s)"
                 cursor.execute(sql, (nome_cientifico, tipo_selecionado))
-                conn.commit()  # Confirma a inserção do patógeno
+                conn.commit() 
                 patogeno_id = cursor.lastrowid
             else:
                 patogeno_id = int(input("Digite o ID do patógeno: "))
@@ -52,7 +48,7 @@ def cadastrar_doenca(conn):
             # Inserção na tabela 'doencas'
             sql_doenca = "INSERT INTO doencas (nome_tecnico, cid, patogeno_id) VALUES (%s, %s, %s)"
             cursor.execute(sql_doenca, (nome_tecnico, cid, patogeno_id))
-            conn.commit()  # Confirma a inserção da doença
+            conn.commit()
             
             registrar_log(f"Cadastro de Doença: {nome_tecnico}, CID: {cid}, Patógeno ID: {patogeno_id}",)
             print("Doença cadastrada com sucesso!")
@@ -71,11 +67,11 @@ def cadastrar_doenca(conn):
             sintoma_existe = cursor.fetchone()[0]
             if sintoma_existe > 0:
                 print(f"Erro: O sintoma '{nome_sintoma}' já está cadastrado.")
-                return  # Encerra a função sem cadastrar o novo sintoma
+                return  
 
             sql = "INSERT INTO sintomas (nome) VALUES (%s)"
             cursor.execute(sql, (nome_sintoma,))
-            conn.commit()  # Confirma a inserção do sintoma
+            conn.commit() 
 
             registrar_log(f"Cadastro de sintoma: {nome_tecnico}")
             print("Sintoma cadastrado com sucesso!")
@@ -88,22 +84,20 @@ def cadastrar_doenca(conn):
         if opcao.lower() == 's':
             doenca_id = int(input("Digite o ID da doença: "))
 
-             # Verificar se o ID da doença é válido
             cursor.execute("SELECT COUNT(*) FROM doencas WHERE id = %s", (doenca_id,))
             doenca_existe = cursor.fetchone()[0]
             if doenca_existe == 0:
                 print(f"Erro: Nenhuma doença cadastrada com o ID '{doenca_id}'.")
-                return  # Encerra a função se o ID da doença não for válido
+                return 
         
             listar_sintomas(conn)
             sintoma_id = int(input("Digite o ID do sintoma: "))
 
-            # Verificar se o ID do sintoma é válido
             cursor.execute("SELECT COUNT(*) FROM sintomas WHERE id = %s", (sintoma_id,))
             sintoma_existe = cursor.fetchone()[0]
             if sintoma_existe == 0:
                 print(f"Erro: Nenhum sintoma cadastrado com o ID '{sintoma_id}'.")
-                return  # Encerra a função se o ID do sintoma não for válido
+                return 
 
             # Menu para selecionar o nível de ocorrência
             niveis_ocorrencia = ["muito comum", "comum", "pouco comum", "raro", "muito raro"]
@@ -119,7 +113,7 @@ def cadastrar_doenca(conn):
 
             sql = "INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES (%s, %s, %s)"
             cursor.execute(sql, (doenca_id, sintoma_id, nivel_selecionado))
-            conn.commit()  # Confirma a inserção da relação doença-sintoma
+            conn.commit() 
 
             registrar_log(f"Cadastro de sintoma: {sintoma_id} à doença: {doenca_id}")
             print("Relação Doença x Sintoma cadastrado com sucesso!")
@@ -135,7 +129,7 @@ def cadastrar_doenca(conn):
             nome_popular = input("Digite o nome popular da doença: ")
             sql = "INSERT INTO doenca_nomes_populares (doenca_id, nome_popular) VALUES (%s, %s)"
             cursor.execute(sql, (doenca_id, nome_popular))
-            conn.commit()  # Confirma a inserção da relação doença-sintoma
+            conn.commit()  
 
             registrar_log(f"Cadastro de nome popular: {nome_popular} à doença: {doenca_id}")
             print("Nome Popular cadastrado com sucesso!")
@@ -149,7 +143,7 @@ def cadastrar_doenca(conn):
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
-        conn.rollback()  # Reverte a transação em caso de erro
+        conn.rollback()  
 
     finally:
         cursor.close()
@@ -183,13 +177,11 @@ def listar_doenca(conn):
 
         registrar_log("Consulta realizada: Listagem de todas as doenças")
 
-        # Cabeçalhos
         headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
         header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
         print(header_row)
         print("-" * (sum(col_widths) + len(col_widths) - 1))
 
-        # Dados
         for row in results:
             print("".join(f"{str(cell):<{width}} " for cell, width in zip(row, col_widths)))
     return None
@@ -218,22 +210,20 @@ def pesquisar_doenca(conn):
     
     try:
         cursor.execute(sql, (f"%{nome_tecnico}%",))
-        results = cursor.fetchall()  # Use fetchall() to get all results
+        results = cursor.fetchall() 
 
         if not results:
             print("Nenhuma Doença cadastrada com esse nome.")
         else:
-            col_widths = [10, 30, 10, 30, 30, 30, 100]  # tamanho das colunas
+            col_widths = [10, 30, 10, 30, 30, 30, 100] 
 
             registrar_log(f"Consulta realizada: Pesquisa de doença: {nome_tecnico}")
 
-            # Cabeçalhos
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]
             header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
             print(header_row)
             print("-" * (sum(col_widths) + len(col_widths) - 1))
 
-            # Dados
             for row in results:
                 print("".join(f"{str(cell):<{width}} " for cell, width in zip(row, col_widths)))
     except mysql.connector.Error as err:

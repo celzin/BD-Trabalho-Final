@@ -45,13 +45,11 @@ def listar_sintomas(conn):
     results = cursor.fetchall()
     col_widths = [10, 30]
 
-    # Cabeçalhos
     headers = ["ID", "Nome"]
     header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
     print(header_row)
     print("-" * (sum(col_widths) + len(col_widths) - 1))
 
-    # Dados
     for row in results:
         print("".join(f"{str(cell):<{width}} " for cell, width in zip(row, col_widths)))
         
@@ -62,12 +60,10 @@ def listar_nomes(conn):
     results = cursor.fetchall()
     col_widths = [10, 30] 
 
-    # Cabeçalhos
     headers = ["ID Doença", "Nome Popular"]
     header_row = "".join(f"{header:<{width}} " for header, width in zip(headers, col_widths))
     print(header_row)
     print("-" * (sum(col_widths) + len(col_widths) - 1))
 
-    # Dados
     for row in results:
         print("".join(f"{str(cell):<{width}} " for cell, width in zip(row, col_widths)))
