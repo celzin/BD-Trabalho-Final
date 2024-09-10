@@ -23,7 +23,7 @@ def gerar_relatorio_de_logs():
             conteudo = log.readlines()
 
         if conteudo:
-            print("=== Conteúdo do Log ===")
+            print("--------------------------------LOG----------------------------------------")
             for linha in conteudo:
                 print(linha.strip())
         else:
