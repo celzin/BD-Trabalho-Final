@@ -13,14 +13,6 @@ REPORT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'rep
 # Cria a pasta de relatórios se não existir
 os.makedirs(REPORT_DIR, exist_ok=True)
 
-def gerar_relatorio(nome_arquivo, dados):
-    """Função genérica para gerar relatórios PDF."""
-    caminho_relatorio = os.path.join(REPORT_DIR, f"{nome_arquivo}.pdf")
-    
-    pdf = SimpleDocTemplate(caminho_relatorio, pagesize=landscape(letter))
-    pdf.build(dados)
-    return caminho_relatorio
-
 #5 - Relatórios ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def relatorio_1(conn):
     cursor = conn.cursor()
@@ -88,10 +80,11 @@ def relatorio_1(conn):
                 ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
             ]))
             
-            elements = [table]
-            caminho_relatorio = gerar_relatorio("relatorio_doenca", elements)
-            registrar_log(f"Relatório gerado para a doença com ID {opcao} em {caminho_relatorio}")
-            print("Relatório gerado com sucesso!")
+            relatorio_path = os.path.join(REPORT_DIR, f"relatorio_doenca_{opcao}.pdf")
+            pdf.output(relatorio_path)
+            
+            registrar_log(f"Relatório gerado para a doença com ID {opcao} em {relatorio_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")
         else:
             print("Doença não encontrada.")
     
@@ -169,11 +162,11 @@ def relatorio_2(conn):
                 ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
                 ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
-
-            elements = [table]
-            caminho_relatorio = gerar_relatorio("relatorio_doenca", elements)
-            registrar_log(f"Relatório de TODAS DOENÇAS gerado em {caminho_relatorio}")
-            print("Relatório gerado com sucesso!")
+            
+            relatorio_path = os.path.join(REPORT_DIR, "relatorio_todas_doencas.pdf")
+            pdf.output(relatorio_path)
+            registrar_log(f"Relatório de todas doenças gerado em {relatorio_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")      
         else:
             print("Nenhuma doença encontrada.")
     
@@ -272,10 +265,10 @@ def relatorio_3(conn):
                 ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
 
-            elements = [table]
-            caminho_relatorio = gerar_relatorio("relatorio_doenca", elements)
-            registrar_log(f"Relatório gerado para a doenças com sintomas: {sintomas_lista} em {caminho_relatorio}")
-            print("Relatório gerado com sucesso!")
+            relatorio_path = os.path.join(REPORT_DIR, "relatorio_doencas_sintomas.pdf")
+            pdf.output(relatorio_path)
+            registrar_log(f"Relatório gerado para doenças com sintomas {sintomas_lista} em {relatorio_path}")
+            print(f"Relatório gerado com sucesso! Salvo em: {relatorio_path}")
     
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
