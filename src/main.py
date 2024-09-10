@@ -31,8 +31,7 @@ def main():
         elif opcao == 5:
             relatorios(conn)
         elif opcao == 6:
-            print('Em Construção!')
-            # gerar_relatorio_de_logs()
+            gerar_relatorio_de_logs()
         elif opcao == 7:
             print("Saindo...")
             break

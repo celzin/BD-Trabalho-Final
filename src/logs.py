@@ -1,38 +1,36 @@
 import logging
-from datetime import datetime
+import os
 
-# Configuração básica de logging
-LOG_FILE = 'operacoes.log'
+LOG_DIR = os.path.abspath('./logs')  
+LOG_FILE = os.path.join(LOG_DIR, 'operacoes.log')
+
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(message)s')
 
-# Função para registrar operações
 def registrar_log(mensagem):
     logging.info(mensagem)
 
-# Função para registrar logs de erro
 def registrar_erro(mensagem):
     logging.error(mensagem)
 
-# Função para gerar o relatório de logs
-# def gerar_relatorio_de_logs():
-#     log_file = 'operacoes.log'
-#     relatorio_file = 'relatorio_logs.txt'
-
-#     try:
-#         # Abrindo o arquivo de logs
-#         with open(log_file, 'r') as log:
-#             conteudo = log.readlines()
-
-#         # Criando o relatório de logs em formato .txt
-#         with open(relatorio_file, 'w') as relatorio:
-#             relatorio.write("Relatório de Operações Registradas\n")
-#             relatorio.write("=" * 40 + "\n\n")
-#             for linha in conteudo:
-#                 relatorio.write(linha)
+def gerar_relatorio_de_logs():
+    try:
+        # print(f"O caminho do arquivo de log é: {LOG_FILE}")
         
-#         print(f"Relatório gerado com sucesso em: {relatorio_file}")
-#         registrar_log("Relatório de logs gerado.")
+        with open(LOG_FILE, 'r') as log:
+            conteudo = log.readlines()
+
+        if conteudo:
+            print("=== Conteúdo do Log ===")
+            for linha in conteudo:
+                print(linha.strip())
+        else:
+            print("O arquivo de log está vazio.")
+
+        registrar_log("Logs exibidos no terminal.")
     
-#     except FileNotFoundError:
-#         print("Arquivo de logs não encontrado.")
-#         registrar_log("Erro ao gerar relatório de logs: arquivo não encontrado.")
+    except FileNotFoundError:
+        print(f"Arquivo de logs não encontrado: {LOG_FILE}")
+        registrar_log("Erro ao exibir logs: arquivo não encontrado.")
