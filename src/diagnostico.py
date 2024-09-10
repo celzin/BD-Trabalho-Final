@@ -44,7 +44,7 @@ def diagnostico(conn):
             print()
             print("Você pode estar com algumas das doenças abaixo:")
             print()
-            col_widths = [10, 30, 10, 30, 30, 30, 100]  # Tamanho das colunas
+            col_widths = [10, 30, 10, 30, 30, 30, 100]
 
             # Cabeçalhos
             headers = ["ID", "Nome Técnico", "CID", "Nomes Populares", "Nome Patógeno", "Tipo Patógeno", "Sintomas"]

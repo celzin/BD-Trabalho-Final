@@ -179,7 +179,7 @@ def listar_doenca(conn):
     if not results:
         print("Nenhuma Doença cadastrada.")
     else:
-        col_widths = [10, 30, 10, 30, 30, 30, 100]  #tamanho das colunas
+        col_widths = [10, 30, 10, 30, 30, 30, 100]  
 
         registrar_log("Consulta realizada: Listagem de todas as doenças")
 

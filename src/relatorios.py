@@ -63,20 +63,17 @@ def relatorio_1(conn):
             # Configura o estilo da tabela
             table = Table(data_with_headers, colWidths=col_widths, rowHeights=row_heights)
             table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  # Cor de fundo do cabeçalho
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  # Cor do texto do cabeçalho
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centraliza o texto
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Fonte do cabeçalho em negrito
-                ('FONTSIZE', (0, 0), (-1, 0), 10),  # Tamanho da fonte do cabeçalho
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espaçamento inferior do cabeçalho
-                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  # Cor de fundo padrão das células
-                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  # Grelha preta em toda a tabela
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  
+                ('FONTSIZE', (0, 0), (-1, 0), 10),  
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  
+                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  
+                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
             ]))
             
-            # Adiciona a tabela ao documento
             elements.append(table)
-
-            # Build PDF
             pdf.build(elements)
 
             registrar_log(f"Relatório gerado para a doença com ID {opcao}")
@@ -148,21 +145,18 @@ def relatorio_2(conn):
             # Configura o estilo da tabela com alternância de cores
             table = Table(data_with_headers, colWidths=col_widths)
             table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  # Cor de fundo do cabeçalho
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  # Cor do texto do cabeçalho
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centraliza o texto
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Fonte do cabeçalho em negrito
-                ('FONTSIZE', (0, 0), (-1, 0), 10),  # Tamanho da fonte do cabeçalho
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espaçamento inferior do cabeçalho
-                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  # Cor de fundo padrão das células
-                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  # Grelha preta em toda a tabela
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  # Alternância de cores das linhas
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  
+                ('FONTSIZE', (0, 0), (-1, 0), 10),  
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  
+                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  
+                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
 
-            # Adiciona a tabela ao documento
             elements.append(table)
-
-            # Build PDF
             pdf.build(elements)
 
             registrar_log(f"Relatório de TODAS DOENÇAS gerado ")
@@ -248,21 +242,19 @@ def relatorio_3(conn):
             # Configura o estilo da tabela
             table = Table(data_with_headers, colWidths=col_widths)
             table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  # Cor de fundo do cabeçalho
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  # Cor do texto do cabeçalho
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Centraliza o texto
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Fonte do cabeçalho em negrito
-                ('FONTSIZE', (0, 0), (-1, 0), 10),  # Tamanho da fonte do cabeçalho
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espaçamento inferior do cabeçalho
-                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  # Cor de fundo padrão das células
-                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  # Grelha preta em toda a tabela
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  # Alternância de cores das linhas
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),  
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'), 
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  
+                ('FONTSIZE', (0, 0), (-1, 0), 10), 
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12), 
+                ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#DAE1F3')),  
+                ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BEC9DC')),  
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor('#DAE1F3'), colors.white]),  
             ]))
 
             # Adiciona a tabela ao documento
             elements.append(table)
-
-            # Build PDF
             pdf.build(elements)
 
             registrar_log(f"Relatório gerado para a doenças com sintomas: {sintomas_lista}")

@@ -5,8 +5,8 @@ conn = mysql.connector.connect(
     user='root',
     password='root',
     database='avaliacao',
-    charset="utf8mb4", # Win11
-    collation="utf8mb4_general_ci" # Win11
+    charset="utf8mb4", 
+    collation="utf8mb4_general_ci" 
 )
 
 def get_db_connection():
@@ -26,7 +26,7 @@ def listar_patogenos(conn):
     sql = "SELECT * FROM patogenos"
     cursor.execute(sql)
     results = cursor.fetchall()
-    col_widths = [10, 30, 10]  #tamanho das colunas
+    col_widths = [10, 30, 10]
 
     # Cabeçalhos
     headers = ["ID", "Nome Científico", "Tipo"]
@@ -43,7 +43,7 @@ def listar_sintomas(conn):
     sql = "SELECT * FROM sintomas"
     cursor.execute(sql)
     results = cursor.fetchall()
-    col_widths = [10, 30]  #tamanho das colunas
+    col_widths = [10, 30]
 
     # Cabeçalhos
     headers = ["ID", "Nome"]
@@ -60,7 +60,7 @@ def listar_nomes(conn):
     sql = "SELECT * FROM doenca_nomes_populares"
     cursor.execute(sql)
     results = cursor.fetchall()
-    col_widths = [10, 30]  #tamanho das colunas
+    col_widths = [10, 30] 
 
     # Cabeçalhos
     headers = ["ID Doença", "Nome Popular"]
