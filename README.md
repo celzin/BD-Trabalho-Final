@@ -41,9 +41,37 @@ Neste projeto, implementamos um sistema de apoio ao diagnóstico de doenças, co
 1. **Banco de Dados MySQL**: Certifique-se de que o MySQL esteja instalado e configurado. Você precisará criar um banco de dados conforme descrito nos scripts SQL fornecidos (`avaliacao-script.sql` e `avaliacao-data.sql`).
 2. **Python 3.x**: O projeto foi implementado em Python. Certifique-se de que o Python esteja instalado.
 3. **Dependências**: Instale as bibliotecas necessárias, como `mysql-connector-python`, `FPDF`, e `reportlab`, utilizando o `pip`.
-   ```bash
-   pip install mysql-connector-python fpdf reportlab
-   ```
+   
+    ```bash
+    pip install mysql-connector-python fpdf reportlab
+    ```
+
+### Configuração da Conexão com o Banco de Dados:
+Abra o arquivo `db_utils.py` e configure os parâmetros de conexão para corresponder ao seu ambiente. Os parâmetros principais a serem ajustados são:
+
+  ```python
+  conn = mysql.connector.connect(
+      host='localhost',      # Substitua pelo endereço do seu servidor MySQL
+      user='root',           # Substitua pelo seu usuário MySQL
+      password='root',       # Substitua pela senha do seu usuário MySQL
+      database='avaliacao',  # O banco de dados utilizado
+      charset="utf8mb4",     
+      collation="utf8mb4_general_ci"
+  )
+  ```
+
+  ```python
+  def get_db_connection():
+      conn = mysql.connector.connect(
+          host='localhost',      # Substitua pelo endereço do seu servidor MySQL
+          user='root',           # Substitua pelo seu usuário MySQL
+          password='root',       # Substitua pela senha do seu usuário MySQL
+          database='avaliacao',  # O banco de dados utilizado
+          charset="utf8mb4",
+          collation="utf8mb4_general_ci"
+      )
+      return conn
+  ```
 
 ### Execução do Sistema:
 1. Navegue até a pasta `src` onde o código está localizado.
