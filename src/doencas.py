@@ -202,8 +202,8 @@ def pesquisar_doenca(conn):
     FROM doencas d 
     JOIN patogenos p ON p.id = d.patogeno_id 
     LEFT JOIN doenca_nomes_populares dnp ON dnp.doenca_id = d.id 
-    JOIN doenca_sintoma ds ON d.id = ds.doenca_id 
-    JOIN sintomas s ON s.id = ds.sintoma_id 
+    LEFT JOIN doenca_sintoma ds ON d.id = ds.doenca_id 
+    LEFT JOIN sintomas s ON s.id = ds.sintoma_id 
     WHERE d.nome_tecnico LIKE %s 
     GROUP BY d.id, d.nome_tecnico, d.cid, dnp.nome_popular, p.nome_cientifico, p.tipo;
     """
