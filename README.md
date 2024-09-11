@@ -38,7 +38,7 @@ Neste projeto, implementamos um sistema de apoio ao diagnóstico de doenças, co
 ## 🔄 Compilação e Execução 
 
 ### Pré-requisitos:
-1. **Banco de Dados MySQL**: Certifique-se de que o MySQL esteja instalado e configurado. Você precisará criar um banco de dados conforme descrito nos scripts SQL fornecidos (`avaliacao-script.sql` e `avaliacao-data.sql`).
+1. **Banco de Dados MySQL**: Certifique-se de que o MySQL esteja instalado e configurado. Você precisará criar um banco de dados conforme descrito nos scripts SQL fornecidos (`esquema.sql` e `dados.sql`).
 2. **Python 3.x**: O projeto foi implementado em Python. Certifique-se de que o Python esteja instalado.
 3. **Dependências**: Instale as bibliotecas necessárias, como `mysql-connector-python`, `FPDF`, e `reportlab`, utilizando o `pip`.
    
