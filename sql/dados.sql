@@ -35,12 +35,7 @@ INSERT INTO patogenos (id, nome_cientifico, tipo) VALUES
 (32, 'Herpes simplex virus', 'Vírus'),
 (33, 'Variola virus', 'Vírus'),
 (34, 'Epstein-Barr virus', 'Vírus'),
-(35, 'Mumps virus', 'Vírus'),
-(36, 'Clostridium tetani', 'Bactéria'),
-(37, 'Hepatitis A virus','Vírus'),
-(38, 'Hepatitis C virus','Vírus'),
-(39, 'Herpes simplex virus','Vírus'),
-(40, 'Variola virus','Vírus');
+(35, 'Mumps virus', 'Vírus');
 
 INSERT INTO doencas (id, cid, nome_tecnico, patogeno_id) VALUES
 (1, 'A15-A19', 'Tuberculose', 1),
@@ -77,12 +72,7 @@ INSERT INTO doencas (id, cid, nome_tecnico, patogeno_id) VALUES
 (32, 'B00', 'Herpes Simples', 32),
 (33, 'B03', 'Varíola', 33),
 (34, 'B27', 'Mononucleose', 34),
-(35, 'B26', 'Caxumba', 35),
-(36, 'A33', 'Tétano Neonatal', 36),
-(37, 'B15', 'Hepatite A', 37),
-(38, 'B17.1', 'Hepatite C', 38),
-(39, 'B00', 'Herpes Simples', 39),
-(40, 'B03', 'Varíola', 40);
+(35, 'B26', 'Caxumba', 35);
 
 INSERT INTO doenca_nomes_populares (doenca_id, nome_popular) VALUES
 (7, 'Sapinho'),
@@ -335,31 +325,3 @@ INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
 (35, 22, 'muito comum'), -- Inchaço das glândulas
 (35, 2, 'comum'), -- Febre
 (35, 4, 'comum'); -- Dor de cabeça
-
--- Tétano Neonatal (36)
-INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
-(36, 16, 'muito comum'), -- Espasmos musculares
-(36, 25, 'muito comum'), -- Rigidez
-(36, 2, 'pouco comum'); -- Febre
-
--- Hepatite A (37)
-INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
-(37, 9, 'comum'), -- Icterícia
-(37, 5, 'comum'), -- Fadiga
-(37, 24, 'comum'); -- Dor abdominal
-
--- Hepatite C (38)
-INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
-(38, 9, 'comum'), -- Icterícia
-(38, 5, 'comum'), -- Fadiga
-(38, 24, 'comum'); -- Dor abdominal
-
--- Herpes Simples (39)
-INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
-(39, 31, 'muito comum'), -- Feridas
-(39, 11, 'comum'), -- Coceira
-(39, 13, 'pouco comum'); -- Dor dor ao urinar
-
--- varíola (40)
-INSERT INTO doenca_sintoma (doenca_id, sintoma_id, ocorrencia) VALUES
-(40, 8, 'muito comum'); -- Erupção cutânea
