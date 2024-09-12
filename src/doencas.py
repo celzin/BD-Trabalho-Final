@@ -22,7 +22,7 @@ def cadastrar_doenca(conn):
             # Adicionar patógeno
             print("-------------------------------------------------------------------------------PATÓGENOS-------------------------------------------------------------------------------------")
             listar_patogenos(conn)
-            opcao = input("Quer adicionar um novo patógeno? (s/n): ")
+            opcao = input("Quer adicionar um novo patógeno à lista de patógenos? (s/n): ")
             patogeno_id = None
             if opcao.lower() == 's':
                 nome_cientifico = input("Digite o nome científico do patógeno: ")
@@ -43,7 +43,7 @@ def cadastrar_doenca(conn):
                 conn.commit() 
                 patogeno_id = cursor.lastrowid
             else:
-                patogeno_id = int(input("Digite o ID do patógeno: "))
+                patogeno_id = int(input("Digite o ID do patógeno para adicionar à doença: "))
 
             # Inserção na tabela 'doencas'
             sql_doenca = "INSERT INTO doencas (nome_tecnico, cid, patogeno_id) VALUES (%s, %s, %s)"
@@ -58,7 +58,7 @@ def cadastrar_doenca(conn):
         # Adicionar sintoma
         print("-------------------------------------------------------------------------------SINTOMAS-------------------------------------------------------------------------------------")
         listar_sintomas(conn)
-        opcao = input("Quer adicionar um novo sintoma? (s/n): ")
+        opcao = input("Quer adicionar um novo sintoma à lista de sintomas? (s/n): ")
         if opcao.lower() == 's':
             nome_sintoma = input("Digite o nome do sintoma: ")
 
@@ -73,7 +73,7 @@ def cadastrar_doenca(conn):
             cursor.execute(sql, (nome_sintoma,))
             conn.commit() 
 
-            registrar_log(f"Cadastro de sintoma: {nome_tecnico}")
+            registrar_log(f"Cadastro de sintoma: {nome_sintoma}")
             print("Sintoma cadastrado com sucesso!")
             print()
         
